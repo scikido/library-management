@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Welcome to the Library Management System</h1>
+
+    <h2>Books in Library:</h2>
+    {% if books %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Serial Number</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>
+                    <form action="{{ url_for('delete_book', book_id=book.id) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No books in the library.</p>
+    {% endif %}
+
+    <a href="{{ url_for('add_book') }}" class="btn btn-primary">Add a Book</a>
+</div>
+{% endblock %}
